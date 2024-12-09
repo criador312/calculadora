@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Investimentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 900px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result h3 {
+            color: #27ae60;
+        }
+        .note {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        .note a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+        th {
+            background-color: #2980b9;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .highlight {
+            background-color: #fff;
+            font-weight: bold;
+            font-size: 12px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Calculadora de Investimentos</h1>
+    
+    <!-- Formulário de Entrada -->
+    <div class="form-group">
+        <label for="valorInicial">Valor Inicial (R$):</label>
+        <input type="number" id="valorInicial" placeholder="Insira o valor inicial" required>
+    </div>
+    <div class="form-group">
+        <label for="depositoMensal">Depósito Mensal (R$):</label>
+        <input type="number" id="depositoMensal" placeholder="Insira o valor do depósito mensal" required>
+    </div>
+    <div class="form-group">
+        <label for="anos">Período de Investimento (anos):</label>
+        <input type="number" id="anos" placeholder="Insira o número de anos" required>
+    </div>
+
+    <!-- Tabela Comparativa -->
+    <table>
+        <thead>
+            <tr>
+                <th>Banco</th>
+                <th>Taxa de Juros Anual (%)</th>
+                <th>CDB (%)</th>
+                <th>CDI (%)</th>
+                <th>Valor Final (R$)</th>
+                <th>Melhor Banco</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="banco1" value="Banco 1"></td>
+                <td><input type="number" id="taxaBanco1" value="8.0" step="0.1"></td>
+                <td><input type="number" id="cdbBanco1" value="0" step="0.1" placeholder="CDB (opcional)"></td>
+                <td><input type="number" id="cdiBanco1" value="0" step="0.1" placeholder="CDI (opcional)"></td>
+                <td id="finalBanco1">-</td>
+                <td rowspan="2" id="melhorBanco" class="highlight">-</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="banco2" value="Banco 2"></td>
+                <td><input type="number" id="taxaBanco2" value="10.0" step="0.1"></td>
+                <td><input type="number" id="cdbBanco2" value="0" step="0.1" placeholder="CDB (opcional)"></td>
+                <td><input type="number" id="cdiBanco2" value="0" step="0.1" placeholder="CDI (opcional)"></td>
+                <td id="finalBanco2">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Botão para calcular -->
+    <button onclick="calcularInvestimento()">Calcular Investimento</button>
+
+    <!-- Resultado -->
+    <div class="result" id="resultado">
+        <h3>Resultado Final</h3>
+        <p><strong>Valor Investido:</strong> R$ <span id="valorInvestido">-</span></p>
+        <p><strong>Valor Final:</strong> R$ <span id="valorFinal">-</span></p>
+    </div>
+
+    <!-- Nota de Apoio -->
+    <div class="note">
+        <p>Ajude nosso projeto PIX: <strong>172.613.947-69 - Banco Next - Natalino Brito Barbosa</strong></p>
+    </div>
+</div>
+
+<script>
+    function calcularInvestimento() {
+        // Entradas
+        const valorInicial = parseFloat(document.getElementById('valorInicial').value);
+        const depositoMensal = parseFloat(document.getElementById('depositoMensal').value);
+        const anos = parseInt(document.getElementById('anos').value);
+        
+        // Obtendo os valores dos Bancos editáveis
+        const banco1 = document.getElementById('banco1').value;
+        const banco2 = document.getElementById('banco2').value;
+        const taxaBanco1 = parseFloat(document.getElementById('taxaBanco1').value) / 100;
+        const taxaBanco2 = parseFloat(document.getElementById('taxaBanco2').value) / 100;
+        const cdbBanco1 = parseFloat(document.getElementById('cdbBanco1').value) / 100;
+        const cdbBanco2 = parseFloat(document.getElementById('cdbBanco2').value) / 100;
+        const cdiBanco1 = parseFloat(document.getElementById('cdiBanco1').value) / 100;
+        const cdiBanco2 = parseFloat(document.getElementById('cdiBanco2').value) / 100;
+        
+        // Fórmula para calcular o valor final de um investimento
+        function calcularValorFinal(valorInicial, depositoMensal, anos, taxaJuros, cdb, cdi) {
+            const meses = anos * 12;
+            let valorFinal = valorInicial;
+            for (let i = 0; i < meses; i++) {
+                valorFinal += depositoMensal;
+                valorFinal *= (1 + (taxaJuros + cdb + cdi) / 12);
+            }
+            return valorFinal.toFixed(2);
+        }
+
+        // Calculando os resultados para ambos os Bancos
+        const resultadoBanco1 = calcularValorFinal(valorInicial, depositoMensal, anos, taxaBanco1, cdbBanco1, cdiBanco1);
+        const resultadoBanco2 = calcularValorFinal(valorInicial, depositoMensal, anos, taxaBanco2, cdbBanco2, cdiBanco2);
+
+        // Exibindo os resultados na tabela
+        document.getElementById('finalBanco1').innerText = "R$ " + resultadoBanco1;
+        document.getElementById('finalBanco2').innerText = "R$ " + resultadoBanco2;
+
+        // Determinando qual banco oferece o melhor rendimento
+        const melhorBanco = resultadoBanco1 > resultadoBanco2 ? banco1 : banco2;
+        document.getElementById('melhorBanco').innerText = melhorBanco;
+
+        // Exibindo o valor final global
+        document.getElementById('valorInvestido').innerText = "R$ " + valorInicial;
+        document.getElementById('valorFinal').innerText = resultadoBanco1 > resultadoBanco2 ? resultadoBanco1 : resultadoBanco2;
+    }
+</script>
+
+</body>
+</html>
